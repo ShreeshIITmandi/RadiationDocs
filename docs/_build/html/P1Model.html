@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>P1 model for radiation &mdash; MultiGrid Radiation 12/04/2022 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Application of P1 radiation models and methods to solve" href="applicationP1rad.html" />
+    <link rel="prev" title="Introduction to radiation" href="Introduction_radiation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> MultiGrid Radiation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction_radiation.html">Introduction to radiation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">P1 model for radiation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general-formulation-of-p1-approximation">General formulation of P1 approximation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#boundary-condition">Boundary Condition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#limitation-of-the-method">Limitation of the method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dicretisation-of-p1-governing-equation">Dicretisation of P1 Governing equation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="applicationP1rad.html">Application of P1 radiation models and methods to solve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introMultigrid.html">Introduction to Multi grid approach</a></li>
+<li class="toctree-l1"><a class="reference internal" href="radiationAMGCL.html">Radiation with AMGCL solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliogrphy.html">Bibliography</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MultiGrid Radiation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">&lt;no title&gt;</a> &raquo;</li>
+      <li>P1 model for radiation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/P1Model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="p1-model-for-radiation">
+<h1>P1 model for radiation<a class="headerlink" href="#p1-model-for-radiation" title="Permalink to this headline"></a></h1>
+<p>In order to solve the complex integro-differential RTE <a class="reference internal" href="Introduction_radiation.html#equation-rte">(1)</a> equation, the method of spherical harmonics can be used to convert the equation to simple partial differential equations. This method is mostly videly used in the combustion community simply for the fact that it helps in accurate prediction of temperature.</p>
+<div class="section" id="general-formulation-of-p1-approximation">
+<h2>General formulation of P1 approximation<a class="headerlink" href="#general-formulation-of-p1-approximation" title="Permalink to this headline"></a></h2>
+<div class="math notranslate nohighlight">
+\[I(s,\hat{s})=\sum_{l=0}^{\infty} \sum_{m=-l}^l I_l^m(r)Y_l^m(\hat{s})\]</div>
+<p>where,</p>
+<p><span class="math notranslate nohighlight">\(Y^m_l(\hat{s})\)</span> is the Legendre polynomial in direction and <span class="math notranslate nohighlight">\(s\)</span> is the location inside the medium.</p>
+<p>For P1 approximation l=1</p>
+<div class="math notranslate nohighlight">
+\[I(s,\hat{s})= I_{0}^{0}Y_0^0 + I_1^{-1}Y_1^{-1}+I_0^0Y_1^0+I_1^1Y_1^1\]</div>
+<p>After simplification the above equation is simplified to (for detailed derivation please refer <span id="id1">[<a class="reference internal" href="bibliogrphy.html#id5" title="Michael F Modest. Chapter 16 - The Method of Spherical Harmonics (PN-Approximation). Academic Press, Boston, third edition edition, 2013. ISBN 978-0-12-386944-9.">2</a>]</span>)</p>
+<div class="math notranslate nohighlight">
+\[I(s,\hat{s})=a(s)+b(s).\hat{s}\]</div>
+<div class="math notranslate nohighlight">
+\[I(s,\hat{s}) = \frac{G(s) + 3Q(s) · \hat{s}}{4π}\]</div>
+<p>where</p>
+<blockquote>
+<div><p>G(s)= Total irradiation</p>
+<p>Q(s)= Total heat flux</p>
+</div></blockquote>
+<p>and is given by</p>
+<div class="math notranslate nohighlight">
+\[\nabla \cdot Q=(1-\omega)(4\pi I_b-G)\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[\nabla G=-(3-A_1\omega)q\]</div>
+<p>Combining above two equations results in solving general Helmholtz equation in G</p>
+<div class="math notranslate nohighlight">
+\[\nabla(\Gamma\nabla G)-\kappa G=-(1-\omega)4\kappa \pi I_b\]</div>
+<p>where,</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Symbols</p></th>
+<th class="head"><p>Defintions</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="math notranslate nohighlight">
+\[\Gamma\]</div>
+</td>
+<td><div class="math notranslate nohighlight">
+\[\frac{1}{3\times(\kappa+\omega)-A_1 \times\omega}\]</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="math notranslate nohighlight">
+\[I_{b}\]</div>
+</td>
+<td><p>Planck function</p></td>
+</tr>
+<tr class="row-even"><td><div class="math notranslate nohighlight">
+\[n\]</div>
+</td>
+<td><p>Refractive index</p></td>
+</tr>
+<tr class="row-odd"><td><div class="math notranslate nohighlight">
+\[A_1\]</div>
+</td>
+<td><p>Scattering phase function</p></td>
+</tr>
+<tr class="row-even"><td><div class="math notranslate nohighlight">
+\[\omega\]</div>
+</td>
+<td><p>Scattering albedo</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="boundary-condition">
+<h2>Boundary Condition<a class="headerlink" href="#boundary-condition" title="Permalink to this headline"></a></h2>
+<p>The basic energy conservation on the wall yields that heat flux form the opaque wall is equal to sum of the energy emitted and reflected form the surface. Which is expressed as</p>
+<div class="math notranslate nohighlight">
+\[2q\cdot \hat{n} = 4j_w-G=\frac{\epsilon}{2-\epsilon}\times(4 \pi I_{bw}-G)\]</div>
+<p>which after simplification will result in</p>
+<div class="math notranslate nohighlight">
+\[-\frac{2-\epsilon}{\epsilon}\frac{2}{3-A_1\omega}\hat{n}.\nabla G+G=4 \pi I_{bw}\]</div>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Symbols</p></th>
+<th class="head"><p>Defintions</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="math notranslate nohighlight">
+\[\epsilon\]</div>
+</td>
+<td><p>Wall emissivity</p></td>
+</tr>
+<tr class="row-odd"><td><div class="math notranslate nohighlight">
+\[I_{bw}\]</div>
+</td>
+<td><p>Planck function</p></td>
+</tr>
+<tr class="row-even"><td><div class="math notranslate nohighlight">
+\[T_w\]</div>
+</td>
+<td><p>Wall temperature</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="limitation-of-the-method">
+<h2>Limitation of the method<a class="headerlink" href="#limitation-of-the-method" title="Permalink to this headline"></a></h2>
+<p>This method is applicable mostly for optical thick case i.e, <span class="math notranslate nohighlight">\(\kappa \times L_c&gt;1\)</span> where <span class="math notranslate nohighlight">\(L_c\)</span> is the characteristic length of the geometry.</p>
+<ul class="simple">
+<li><p>In the application like micro-combustor and micro-channnels where in the characterstic lenghts are small, this model fails to predict.</p></li>
+<li><p>In the application wherein the absorption coefficients are low i.e, in the case of absorption coeffcient of the medium at very high temperature and low mole fraction of the participating gas this model does’nt accurately predict.</p></li>
+</ul>
+</div>
+<div class="section" id="dicretisation-of-p1-governing-equation">
+<h2>Dicretisation of P1 Governing equation<a class="headerlink" href="#dicretisation-of-p1-governing-equation" title="Permalink to this headline"></a></h2>
+<p>The governing equation for P1 when discretised using central difference gives the following set of equation for each grid point considered</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}G(i,j,k)\left(-\frac{2 \Gamma}{\Delta x^2}-\frac{2 \Gamma}{\Delta y^2}-\frac{2 \Gamma}{\Delta z^2} \right) + \Gamma \left(\frac{G(i+1,j,k)+G(i-1,j,k)}{\Delta x^2} \right)+\\ \Gamma\left( \frac{G(i,j+1,k)+G(i,j-1,k)}{\Delta y^2}+\frac{G(i,j,k+1)+G(i,j,k-1)}{\Delta z^2}\right) \\ \\ = -(1-\omega)4\kappa\sigma T^4(i,j,k)\end{split}\]</div>
+<p><strong>At the boundary</strong></p>
+<p>Showing discretisation only on one boundary</p>
+<div class="math notranslate nohighlight">
+\[G(i,j,k)\left(1-\frac{2}{\Delta x}\frac{2-\epsilon}{\epsilon}\frac{2}{3-A_1\omega}\right)+\left(\frac{2}{\Delta x}\frac{2-\epsilon}{\epsilon}\frac{2}{3-A_1\omega}\right) G(i-1,j,k)=4\sigma T^4_w\]</div>
+<p>So the above discretisation will lead to formulation of</p>
+<div class="math notranslate nohighlight">
+\[Ax=b\]</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Introduction_radiation.html" class="btn btn-neutral float-left" title="Introduction to radiation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="applicationP1rad.html" class="btn btn-neutral float-right" title="Application of P1 radiation models and methods to solve" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, SSL.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

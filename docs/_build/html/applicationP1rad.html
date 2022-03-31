@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application of P1 radiation models and methods to solve &mdash; MultiGrid Radiation 12/04/2022 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction to Multi grid approach" href="introMultigrid.html" />
+    <link rel="prev" title="P1 model for radiation" href="P1Model.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> MultiGrid Radiation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction_radiation.html">Introduction to radiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="P1Model.html">P1 model for radiation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Application of P1 radiation models and methods to solve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introMultigrid.html">Introduction to Multi grid approach</a></li>
+<li class="toctree-l1"><a class="reference internal" href="radiationAMGCL.html">Radiation with AMGCL solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliogrphy.html">Bibliography</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MultiGrid Radiation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">&lt;no title&gt;</a> &raquo;</li>
+      <li>Application of P1 radiation models and methods to solve</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/applicationP1rad.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="application-of-p1-radiation-models-and-methods-to-solve">
+<h1>Application of P1 radiation models and methods to solve<a class="headerlink" href="#application-of-p1-radiation-models-and-methods-to-solve" title="Permalink to this headline"></a></h1>
+<ul class="simple">
+<li><p>P1 method is widely used radiation models in the high fidely combustion application using Conjugate gradient method as suggested by <span id="id1">[<a class="reference internal" href="bibliogrphy.html#id6" title="Gautham Krishnamoorthy. A computationally efficient p1 radiation model for modern combustion systems utilizing pre-conditioned conjugate gradient methods. Applied Thermal Engineering, 119:197–206, 2017.">3</a>]</span>.</p></li>
+<li><p>P1 method is also widely used in the prediction of arc temperature from the nozzle arcs as suggested by <span id="id2">[<a class="reference internal" href="bibliogrphy.html#id7" title="CM Dixon, JD Yan, and MTC Fang. A comparison of three radiation models for the calculation of nozzle arcs. Journal of Physics D: Applied Physics, 37(23):3309, 2004.">4</a>]</span>.</p></li>
+<li><p>There have been many proposal on solving radiation using implicit formulations one which includes multi-grid approach as suggested by <span id="id3">[<a class="reference internal" href="bibliogrphy.html#id8" title="WD Joubert. Lamg: los alamos multigrid code reference manual. 2003.">5</a>]</span>.</p></li>
+<li><p>Many researchers have developed various efficient algorithms for multi-grid as sugested in works of <span id="id4">[<a class="reference internal" href="bibliogrphy.html#id9" title="David B Carrington and Vincent A Mousseau. Preconditioning and solver optimization ideas for radiative transfer. In Heat Transfer Summer Conference, volume 47314, 787–796. 2005.">6</a>]</span>.</p></li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="P1Model.html" class="btn btn-neutral float-left" title="P1 model for radiation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="introMultigrid.html" class="btn btn-neutral float-right" title="Introduction to Multi grid approach" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, SSL.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

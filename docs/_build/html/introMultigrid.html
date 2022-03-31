@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction to Multi grid approach &mdash; MultiGrid Radiation 12/04/2022 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Radiation with AMGCL solver" href="radiationAMGCL.html" />
+    <link rel="prev" title="Application of P1 radiation models and methods to solve" href="applicationP1rad.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> MultiGrid Radiation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction_radiation.html">Introduction to radiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="P1Model.html">P1 model for radiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="applicationP1rad.html">Application of P1 radiation models and methods to solve</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Multi grid approach</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#steps-involved-in-multi-grid-approach">Steps involved in multi grid approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#different-apporaches-of-multi-grid-method">Different apporaches of multi grid method</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="radiationAMGCL.html">Radiation with AMGCL solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliogrphy.html">Bibliography</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MultiGrid Radiation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">&lt;no title&gt;</a> &raquo;</li>
+      <li>Introduction to Multi grid approach</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/introMultigrid.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="introduction-to-multi-grid-approach">
+<h1>Introduction to Multi grid approach<a class="headerlink" href="#introduction-to-multi-grid-approach" title="Permalink to this headline"></a></h1>
+<p>Since radiation with P1 model is inherently for steady state applications. Therfore it becomes imperative to solve radiation for the steady state.</p>
+<p>With the formulation of <span class="math notranslate nohighlight">\(Ax=b\)</span>, the solution that is G can be obtained by inverting A.</p>
+<p>But however due to large size of the matrix generated. Solving the the equation with conjugate gradient or any other krylov subspace seems to be compute expensive.</p>
+<p>However krylov subspace methods can be used as the pre-conditioner in the multi-grid approach where matrix is solved on the low resolution and further the errors are corrected on to the fine resolutions.</p>
+<div class="section" id="steps-involved-in-multi-grid-approach">
+<h2>Steps involved in multi grid approach<a class="headerlink" href="#steps-involved-in-multi-grid-approach" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Solve governing equations on the fine mesh until the partial convergence.</p></li>
+<li><p>Calculate the residual error on the fine mesh.</p></li>
+<li><p>The residual error on the fine mesh is transformed to coarse mesh to calculate the correction factor called (Correction vector) using again Gauss Seidel or Gauss Jordan method.</p></li>
+<li><p>The  correction vector calculated on the coarse mesh is again transferred to the fine mesh using simple interpolation techniques called (Prolongation method).</p></li>
+<li><p>Final solution is obtained from adding initial partial converged solution (obtained from step 1) with the correction vector.</p></li>
+</ul>
+<p>This can be easily understood by the following diagram</p>
+<div class="figure align-center" id="multigrid">
+<a class="reference internal image-reference" href="_images/multigrid.png"><img alt="alternate text" src="_images/multigrid.png" style="width: 500.0px; height: 500.0px;" /></a>
+</div>
+<p>where P and R represents the prolongation and restriction of the errors that are solved on various grid levels. The restriction operator is transpose of interpolation operator <span class="math notranslate nohighlight">\(R=P^T\)</span></p>
+<p>The three main steps involved in generation of prolongation/restrictor operator are as follows</p>
+<ul class="simple">
+<li><p>Generation of strength of connection matrix</p></li>
+<li><p>Splitting of fine matrix as coarse node and fine node</p></li>
+<li><p>Generation of interpolation matrix by assigning approprite weights to the node</p></li>
+<li><p>Performing Galerkin operator on the fine matrix as <span class="math notranslate nohighlight">\(P^TAP\)</span></p></li>
+</ul>
+<p>The algorithm differ by generation of splitting matrix as proposed many researchers, which of them include</p>
+<ul class="simple">
+<li><p>Ruge stuben classical AMG approach <span id="id1">[<a class="reference internal" href="bibliogrphy.html#id3" title="Klaus Stuben. Algebraic multigrid (amg): an introduction with applications. gmd-forschungszentrum informationstechnik. 1999.">7</a>]</span></p></li>
+<li><p>Point-wise aggregate method</p></li>
+<li><p>Plain aggregates</p></li>
+<li><p>Smoothed aggregates using energy minimisation <span id="id2">[<a class="reference internal" href="bibliogrphy.html#id4" title="Marzio Sala and Raymond S Tuminaro. A new petrov–galerkin smoothed aggregation preconditioner for nonsymmetric linear systems. SIAM Journal on Scientific Computing, 31(1):143–166, 2008.">8</a>]</span></p></li>
+</ul>
+</div>
+<div class="section" id="different-apporaches-of-multi-grid-method">
+<h2>Different apporaches of multi grid method<a class="headerlink" href="#different-apporaches-of-multi-grid-method" title="Permalink to this headline"></a></h2>
+<p>Different combinations of prolongation, restrictor and smoothner procedures are followed as shown in the figure, where <em>P</em>, <em>R</em> and <em>S</em> represents prolongation and restriction operator and <em>S</em> represents solving for error i.e,
+<span class="math notranslate nohighlight">\(Ae=r\)</span> where e is error and r is residual, using any of the iterative solver primarily Krylov subspace methods are preferred.</p>
+<p><a class="reference internal" href="_images/Vcycle.png"><img alt="pic1" src="_images/Vcycle.png" style="width: 42%;" /></a>  <a class="reference internal" href="_images/Wcycle.png"><img alt="pic2" src="_images/Wcycle.png" style="width: 48%;" /></a></p>
+<blockquote>
+<div><p>Combinations of prolongation, restriction and smoother are operated called V cycle and W cycle respectively (from left to right) <span id="id3">[<a class="reference internal" href="bibliogrphy.html#id11" title="Iulian Stroia, Lucian Mihai Itu, Cosmin Ioan Nita, Laszlo Lazar, and Constantin Suciu. Gpu accelerated geometric multigrid method: comparison with preconditioned conjugate gradient. 2015 IEEE High Performance Extreme Computing Conference (HPEC), pages 1-6, 2015.">9</a>]</span></p>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="applicationP1rad.html" class="btn btn-neutral float-left" title="Application of P1 radiation models and methods to solve" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="radiationAMGCL.html" class="btn btn-neutral float-right" title="Radiation with AMGCL solver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, SSL.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
